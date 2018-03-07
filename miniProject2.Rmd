@@ -9,10 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(tidyverse)
-data("house_elections.rda")
-data("candidates.rda")
-data("committees.rda")
-data("contributions.rda")
+load("house_elections.rda")
+load("candidates.rda")
+load("committees.rda")
+load("contributions.rda")
 ```
 
 ## R Markdown
@@ -24,5 +24,5 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r cars}
 summary(cars)
 ```
-ksc
+
 
