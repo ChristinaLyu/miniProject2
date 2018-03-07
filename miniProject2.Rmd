@@ -7,6 +7,12 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+data("house_elections.rda")
+data("candidates.rda")
+data("committees.rda")
+data("contributions.rda")
 ```
 
 ## R Markdown
