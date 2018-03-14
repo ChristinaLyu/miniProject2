@@ -23,8 +23,51 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+```{r percentage}
+joined <- 
+  committees %>%
+  left_join(contributions, by = "cmte_id")
+
+group_id <-
+  joined %>%
+  group_by(cmte_id, cmte_state) %>%
+  summarise(
+    amount = n(),
+         same = sum(ifelse(state == cmte_state, 1, 0)),
+         diff = amount - same)
+
+
 ```
 
+```{r}
+group_id %>%
+  filter(!is.na(same)) %>%
+  group_by(cmte_state) %>%
+  summarise(total = sum(amount),
+         inState = sum(same),
+         outState = sum(diff), 
+         percentageIn = inState / total, 
+         percentageOut = outState / total)
+```
+
+```{r amount}
+percentage <- 
+  joined %>%
+  group_by(cmte_state) %>%
+  mutate(sum = sum(transaction_amt))
+
+percentageIn <- 
+  percentage %>%
+  filter(cmte_state == state) %>%
+  mutate(sumIn = sum(transaction_amt),
+         percentageIn = sumIn / sum) %>%
+  select(cmte_state, sum, sumIn, percentageIn)
+
+percentageOut <- 
+  percentage %>%
+  filter(cmte_state != state) %>%
+  mutate(sumOut = sum(transaction_amt),
+         percentageOut = sumOut / sum) %>%
+  select(cmte_state, sum, sumOut, percentageOut)
+```
 
