@@ -40,7 +40,8 @@ group_id <-
 ```
 
 ```{r}
-group_id %>%
+group_summary <-
+  group_id %>%
   filter(!is.na(same)) %>%
   group_by(cmte_state) %>%
   summarise(total = sum(amount),
@@ -48,7 +49,23 @@ group_id %>%
          outState = sum(diff), 
          percentageIn = inState / total, 
          percentageOut = outState / total)
+
+group_summary 
+
+group_summary %>%
+  summarise(all = sum(total),
+            inS = sum(inState),
+            outS = sum(outState),
+            meanIn = inS / all,
+            meanOut = outS / all
+            )
+
+group_summary %>%
+  filter(percentageIn == max(percentageIn) | 
+           percentageOut == max(percentageOut))
 ```
+
+From the result of the dataset, the states have a mean of 15.61% contributions to committees in the same state, and a mean of 84% contributions to other states. Therefore, most states do contribute to committes out of state. From the dataset we can also get the information that most of the contributions in West Virginia are made to committees within the state and all of the contributions in Puerto Rico are made to committees outside the state. 
 
 ```{r amount}
 percentage <- 
