@@ -17,13 +17,8 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r percentage}
+```{r percentage, warning = FALSE, message = FALSE}
 joined <- 
   committees %>%
   left_join(contributions, by = "cmte_id")
@@ -39,7 +34,7 @@ group_id <-
 
 ```
 
-```{r}
+```{r warning = FALSE, message = FALSE}
 group_summary <-
   group_id %>%
   filter(!is.na(same)) %>%
@@ -67,7 +62,7 @@ group_summary %>%
 
 From the result of the dataset, the states have a mean of 15.61% contributions to committees in the same state, and a mean of 84% contributions to other states. Therefore, most states do contribute to committes out of state. From the dataset we can also get the information that most of the contributions in West Virginia are made to committees within the state and all of the contributions in Puerto Rico are made to committees outside the state. 
 
-```{r amount}
+```{r amount, warning = FALSE, message = FALSE}
 percentage <- 
   joined %>%
   group_by(cmte_state) %>%
