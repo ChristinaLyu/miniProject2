@@ -86,9 +86,13 @@ percentageOut <-
   filter(cmte_state != state) %>%
   mutate(sumOut = sum(transaction_amt),
          percentOut = sumOut / total) %>%
-  select(cmte_state, total, sumOut, percentOut)
+  select(cmte_state, sumOut, percentOut)
 
 percentageOut <- 
   percentageOut[!duplicated(percentageOut), ]
+
+percentage_all <- percentageIn %>%
+  full_join(percentageOut, by = "cmte_state")
+  
 ```
 
