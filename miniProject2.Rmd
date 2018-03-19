@@ -7,6 +7,8 @@ output:
     code_folding: hide
 ---
 
+Git hub link: [https://github.com/ChristinaLyu/miniProject2.git](https://github.com/ChristinaLyu/miniProject2.git)
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
@@ -65,21 +67,28 @@ From the result of the dataset, the states have a mean of 15.61% contributions t
 ```{r amount, warning = FALSE, message = FALSE}
 percentage <- 
   joined %>%
+  filter(!is.na(transaction_amt)) %>%
   group_by(cmte_state) %>%
-  mutate(sum = sum(transaction_amt))
+  mutate(total = sum(transaction_amt))
 
 percentageIn <- 
   percentage %>%
   filter(cmte_state == state) %>%
   mutate(sumIn = sum(transaction_amt),
-         percentageIn = sumIn / sum) %>%
-  select(cmte_state, sum, sumIn, percentageIn)
+         percentIn = sumIn / total) %>%
+  select(cmte_state, total, sumIn, percentIn)
+
+percentageIn <- 
+  percentageIn[!duplicated(percentageIn), ]
 
 percentageOut <- 
   percentage %>%
   filter(cmte_state != state) %>%
   mutate(sumOut = sum(transaction_amt),
-         percentageOut = sumOut / sum) %>%
-  select(cmte_state, sum, sumOut, percentageOut)
+         percentOut = sumOut / total) %>%
+  select(cmte_state, total, sumOut, percentOut)
+
+percentageOut <- 
+  percentageOut[!duplicated(percentageOut), ]
 ```
 
