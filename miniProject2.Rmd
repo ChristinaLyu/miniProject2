@@ -79,7 +79,7 @@ group_summary %>%
            percentageOut == max(percentageOut))
 ```
 
-From the result of the dataset, the states have a mean of 15.61% contributions to committees in the same state, and a mean of 84% contributions to other states. Therefore, most states do contribute to committes out of state. From the dataset we can also get the information that most of the contributions in West Virginia are made to committees within the state and all of the contributions in Puerto Rico are made to committees outside the state. 
+From the result of the dataset, the states have a mean of 15.61% contributions to committees in the same state, and a mean of 84% contributions to other states. Therefore, most states do contribute to committees out of state. From the dataset we can also get the information that most of the contributions in West Virginia are made to committees within the state and all of the contributions in Puerto Rico are made to committees outside the state. 
 
 ```{r amount, warning = FALSE, message = FALSE}
 percentage <- 
