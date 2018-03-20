@@ -93,14 +93,21 @@ percentage <-
   #add a colomn called total representing the total amount of transactions
   mutate(total = sum(transaction_amt))
 
+getPercentage <- function(data) {
+  data %>%
+    #add columns of sumOut representing the total amount of transaction outside the state and its percentage in the total
+    mutate(sumName = sum(transaction_amt),
+           percentName = sumName / total) %>%
+    select(cmte_state, total, sumName, percentName)
+}
+
 percentageIn <- 
   percentage %>%
-  #select the rows where the donation is made to the same state as the committee
   filter(cmte_state == state) %>%
-  #add columns of sumIn representing the total amount of transaction within the state and its percentage in the total
-  mutate(sumIn = sum(transaction_amt),
-         percentIn = sumIn / total) %>%
-  select(cmte_state, total, sumIn, percentIn)
+  getPercentage() %>%
+  select(cmte_state, sumName, percentName)
+
+colnames(percentageIn) <- c("cmte_state", "sumIn", "percentIn")
 
 #remove duplicate rows
 percentageIn <- 
@@ -110,14 +117,14 @@ percentageOut <-
   percentage %>%
   #select the rows where the donation is made to the different states as the committee
   filter(cmte_state != state) %>%
-  #add columns of sumOut representing the total amount of transaction outside the state and its percentage in the total
-  mutate(sumOut = sum(transaction_amt),
-         percentOut = sumOut / total) %>%
-  select(cmte_state, sumOut, percentOut)
+  getPercentage() 
 
+colnames(percentageOut) <- c("cmte_state", "sumOut", "percentOut")
+
+#remove duplicate rows
 percentageOut <- 
-  #remove duplicate rows
   percentageOut[!duplicated(percentageOut), ]
+
 
 #join the two dataframe
 percentage_all <- percentageIn %>%
