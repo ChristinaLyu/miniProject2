@@ -1,5 +1,5 @@
 ---
-title: "miniPorject2"
+title: "Percentage Difference in Contributions in and out of the State"
 author: "Christina Ly & Caroline Li"
 date: "3/7/2018"
 output: 
@@ -8,6 +8,9 @@ output:
 ---
 
 Git hub link: [https://github.com/ChristinaLyu/miniProject2.git](https://github.com/ChristinaLyu/miniProject2.git)
+
+Introduction: 
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -21,26 +24,38 @@ load("contributions.rda")
 
 
 ```{r percentage, warning = FALSE, message = FALSE}
+#join two data frames: committees and contributions
 joined <- 
   committees %>%
+  #use left join to keep the information in contributions and put the information in committees in the left
   left_join(contributions, by = "cmte_id")
 
+#create new dataframe group_id with the comittees grouped by the name and state
 group_id <-
   joined %>%
+  #group the committees by name, and if they have the same name group them by their state
   group_by(cmte_id, cmte_state) %>%
+  #summarise the dataframe
   summarise(
+    #number of contributions made
     amount = n(),
-         same = sum(ifelse(state == cmte_state, 1, 0)),
-         diff = amount - same)
+    #get the number of contributions made to inside of the state
+    same = sum(ifelse(state == cmte_state, 1, 0)),
+    #contributions to outside of the state
+    diff = amount - same)
 
 
 ```
 
 ```{r warning = FALSE, message = FALSE}
+
 group_summary <-
   group_id %>%
+  #select the rows where same is not NA
   filter(!is.na(same)) %>%
+  #put committees for each state together
   group_by(cmte_state) %>%
+  #summarise the groups with the total contributions, and the inState, outState contributions and calculate the percentage
   summarise(total = sum(amount),
          inState = sum(same),
          outState = sum(diff), 
@@ -50,6 +65,7 @@ group_summary <-
 group_summary 
 
 group_summary %>%
+  #summarise the previous dataframe by the mean of the percentage in State and out of State
   summarise(all = sum(total),
             inS = sum(inState),
             outS = sum(outState),
@@ -58,6 +74,7 @@ group_summary %>%
             )
 
 group_summary %>%
+  #select the rows with the fewest or the most inState contributions
   filter(percentageIn == max(percentageIn) | 
            percentageOut == max(percentageOut))
 ```
@@ -67,30 +84,40 @@ From the result of the dataset, the states have a mean of 15.61% contributions t
 ```{r amount, warning = FALSE, message = FALSE}
 percentage <- 
   joined %>%
+  #select rows in which transaction_amt is not NA
   filter(!is.na(transaction_amt)) %>%
+  #group the dataframe by the state
   group_by(cmte_state) %>%
+  #add a colomn called total representing the total amount of transactions
   mutate(total = sum(transaction_amt))
 
 percentageIn <- 
   percentage %>%
+  #select the rows where the donation is made to the same state as the committee
   filter(cmte_state == state) %>%
+  #add columns of sumIn representing the total amount of transaction within the state and its percentage in the total
   mutate(sumIn = sum(transaction_amt),
          percentIn = sumIn / total) %>%
   select(cmte_state, total, sumIn, percentIn)
 
+#remove duplicate rows
 percentageIn <- 
   percentageIn[!duplicated(percentageIn), ]
 
 percentageOut <- 
   percentage %>%
+  #select the rows where the donation is made to the different states as the committee
   filter(cmte_state != state) %>%
+  #add columns of sumOut representing the total amount of transaction outside the state and its percentage in the total
   mutate(sumOut = sum(transaction_amt),
          percentOut = sumOut / total) %>%
   select(cmte_state, sumOut, percentOut)
 
 percentageOut <- 
+  #remove duplicate rows
   percentageOut[!duplicated(percentageOut), ]
 
+#join the two dataframe
 percentage_all <- percentageIn %>%
   full_join(percentageOut, by = "cmte_state")
   
