@@ -20,6 +20,8 @@ load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
+library(ggplot2)
+library(ggthemes)
 ```
 
 
@@ -121,5 +123,22 @@ percentageOut <-
 percentage_all <- percentageIn %>%
   full_join(percentageOut, by = "cmte_state")
   
+
+all <- 
+  percentage %>%
+  mutate(inState = ifelse(cmte_state == state, 1, 0)) %>%
+  select(cmte_state, inState)
+
+all
 ```
+
+```{r fig.width=15}
+bar_plot <- 
+  percentage_all %>%
+  ggplot(aes(x = factor(cmte_state))) + 
+  geom_bar(aes(x = factor(cmte_state), y = percentIn), stat = "identity", fill = "red") 
+```
+
+
+
 
