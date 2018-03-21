@@ -125,25 +125,22 @@ colnames(percentageOut) <- c("cmte_state", "sumOut", "percentOut")
 percentageOut <- 
   percentageOut[!duplicated(percentageOut), ]
 
-
 #join the two dataframe
 percentage_all <- percentageIn %>%
   full_join(percentageOut, by = "cmte_state")
   
-
 all <- 
   percentage %>%
   mutate(inState = ifelse(cmte_state == state, 1, 0)) %>%
   select(cmte_state, inState)
-
-all
 ```
 
-```{r fig.width=15}
+```{r, message = FALSE, warning = FALSE, fig.width=15}
 bar_plot <- 
   percentage_all %>%
   ggplot(aes(x = factor(cmte_state))) + 
   geom_bar(aes(x = factor(cmte_state), y = percentIn), stat = "identity", fill = "red") 
+bar_plot
 ```
 
 
