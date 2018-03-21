@@ -9,8 +9,7 @@ output:
 
 Git hub link: [https://github.com/ChristinaLyu/miniProject2.git](https://github.com/ChristinaLyu/miniProject2.git)
 
-Introduction: 
-
+The amount of campaign funding can indicate A candidate’s ability to find, communicate with and cultivate supporters. In the 2012 presidential election, President Obama, the Democratic Party, and supportive outside groups raised more than $1.1 billion in his victorious campaign. In recent years, political engagement across state lines has increased dramatically. Today, only Alaska and Hawaii impose any limits on out-of-state contributions, and no state limits out-of-state expenditures. Therefore, we want to analyze the difference between inflow and outflow of the contributions in each state.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -45,7 +44,7 @@ group_id <-
     #get the number of contributions made to inside of the state
     same = sum(ifelse(state == cmte_state, 1, 0)),
     #contributions to outside of the state
-    diff = amount - same)
+    diff = amount - same) 
 
 
 ```
@@ -63,7 +62,7 @@ group_summary <-
          inState = sum(same),
          outState = sum(diff), 
          percentageIn = inState / total, 
-         percentageOut = outState / total)
+         percentageOut = outState / total) 
 
 group_summary 
 
@@ -82,7 +81,7 @@ group_summary %>%
            percentageOut == max(percentageOut))
 ```
 
-From the result of the dataset, the states have a mean of 15.61% contributions to committees in the same state, and a mean of 84% contributions to other states. Therefore, most states do contribute to committees out of state. From the dataset we can also get the information that most of the contributions in West Virginia are made to committees within the state and all of the contributions in Puerto Rico are made to committees outside the state. 
+From the result of the dataset, among the states we are analyzing, the District of Columbia has the largest contribution in and out of the total. Overall, there is a mean of 15.61% contributions to committees in the same state and a mean of 84% contributions to other states. Therefore, most states contribute to committees out of state. From the dataset, we can also get the information that most of the contributions in West Virginia are made to committees within the state, and all of the contributions in Puerto Rico are made to committees outside the state. 
 
 ```{r amount, warning = FALSE, message = FALSE}
 percentage <- 
@@ -144,6 +143,11 @@ bar_plot <-
 bar_plot
 ```
 
+To analyze the data, we joined dataset *committees* and *contributions* together by committees ID. Then we calculated the sum of transaction inside each state and outside each state. Looking at the bar plot, we can see that except four regions, Arizona, Hawaii, Idaho, and the Northern Mariana Islands, most of the regions have contributions inflow smaller than 50%. This indicates that over half of the money transaction in most of the states is out-of-state transactions, which makes sense as most people care about their rights in the states.
+
+There is no transaction inflow in Puerto Rico. We think this could be explained by the political voting right of Puerto Rico. Residents in Puerto Rico are not entitled to electoral votes for President. In the U.S. House of Representatives, Puerto Rico is entitled to a Resident Commissioner, a delegate who is not allowed to vote on the floor of the House. Among all the states who do contribute to committees within the states, Iowa has the lowest rate. We found it is noteworthy as Iowa is one of the swing states.
+
+Looking at the top ten regions with the largest percentIn, four of them (Hawaii, Maine, Nebraska and California) are leaning or solid Democratic. Three of them (Arizona, Idaho and North Dakota) are leaning or solid Republican. Two of them (Guam and the Northern Mariana Islands) are regions that can't vote (Commonwealth/Territory), and Ohio is a swing state. 
 
 ```{r}
 state_list <- c("Alabama",
@@ -204,7 +208,6 @@ i <- 1
 stateLower <- list()
 for (state in state_list){
   lower <- tolower(state)
-  #states$cmte_state <- state.abb[grep(state, states$region)]
   stateLower[[i]] <- lower
   i <- i + 1
 }
@@ -228,4 +231,20 @@ gg <- gg + scale_fill_gradient(low = "yellow", high = "red", guide = "colourbar"
 gg <- gg + coord_equal() 
 
 gg
+
 ```
+
+We then mapped the percentIn on a geographical map. It shows that Maine and states in the west coast overall have relatively higher percentIn, while states in the middle America have relatively lower percentIn. However, among states in the middle part of America, North Dakota stands out from the states surround with the percentIn of 44%.
+
+```{r, warning = FALSE}
+gg2 <- ggplot()
+gg2 <- gg2 + theme(legend.position="none")
+gg2 <- gg2 + geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=total))
+
+gg2 <- gg2 + scale_fill_gradient(low = "yellow", high = "black", guide = "colourbar")
+gg2 <- gg2 + coord_equal() 
+
+gg2
+```
+
+In this graph, we mapped the total contributions to political committees. The five states with the largest total contributions are District of Columbia, Virginia, Texas, California and New York, while the five states with the least total contributions are Northern Mariana Islands, Guam, Virgin Islands, Maine, and Alaska. We figured out that developed states are more likely to make more contributions, while regions of territories or not well-developed are less likely to contribute to US political activities.
