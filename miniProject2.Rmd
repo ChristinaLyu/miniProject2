@@ -223,27 +223,26 @@ map_per <- inner_join(states, percentage_all, by = "cmte_state")
 map_per <- 
   map_per[!duplicated(map_per), ]
 
-gg <- ggplot()
-gg <- gg + theme(legend.position="none")
-gg <- gg + geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=percentIn))
+mapGraph <- function(fillV, color1, color2) {
+  ggplot() + 
+    theme(legend.position="none") + 
+    geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=fillV)) + 
+    scale_fill_gradient(low = color1, high = color2, guide = "colourbar") + 
+    coord_equal() 
+}
 
-gg <- gg + scale_fill_gradient(low = "yellow", high = "red", guide = "colourbar")
-gg <- gg + coord_equal() 
-
+gg <-
+  mapGraph(map_per$percentIn, "yellow", "red")
 gg
+
 
 ```
 
 We then mapped the percentIn on a geographical map. It shows that Maine and states in the west coast overall have relatively higher percentIn, while states in the middle America have relatively lower percentIn. However, among states in the middle part of America, North Dakota stands out from the states surround with the percentIn of 44%.
 
 ```{r, warning = FALSE}
-gg2 <- ggplot()
-gg2 <- gg2 + theme(legend.position="none")
-gg2 <- gg2 + geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=total))
-
-gg2 <- gg2 + scale_fill_gradient(low = "yellow", high = "black", guide = "colourbar")
-gg2 <- gg2 + coord_equal() 
-
+gg2 <-   
+  mapGraph(map_per$total, "yellow", "black")
 gg2
 ```
 
