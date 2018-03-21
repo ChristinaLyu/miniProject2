@@ -199,7 +199,7 @@ state_list <- c("Alabama",
 states <- map_data("state")
 ```
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 i <- 1
 stateLower <- list()
 for (state in state_list){
@@ -214,14 +214,11 @@ for(i in seq_along(stateLower)){
 }
 
 states$cmte_state <- states$region
-#states$cmte_state <- states$region
-states
+
 map_per <- inner_join(states, percentage_all, by = "cmte_state")
 #remove duplicate rows
 map_per <- 
   map_per[!duplicated(map_per), ]
-
-map_per
 
 gg <- ggplot()
 gg <- gg + theme(legend.position="none")
