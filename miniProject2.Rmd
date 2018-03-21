@@ -22,6 +22,7 @@ load("committees.rda")
 load("contributions.rda")
 library(ggplot2)
 library(ggthemes)
+library(maps)
 ```
 
 
@@ -119,7 +120,7 @@ percentageOut <-
   filter(cmte_state != state) %>%
   getPercentage() 
 
-colnames(percentageOut) <- c("cmte_state", "sumOut", "percentOut")
+colnames(percentageOut) <- c("cmte_state", "total", "sumOut", "percentOut")
 
 #remove duplicate rows
 percentageOut <- 
@@ -144,5 +145,92 @@ bar_plot
 ```
 
 
+```{r}
+state_list <- c("Alabama",
+"Alaska",
+"Arizona",
+"Arkansas",
+"California",
+"Colorado",
+"Connecticut",
+"Delaware",
+"Florida",
+"Georgia",
+"Hawaii",
+"Idaho",
+"Illinois",
+"Indiana",
+"Iowa",
+"Kansas",
+"Kentucky",
+"Louisiana",
+"Maine",
+"Maryland",
+"Massachusetts",
+"Michigan",
+"Minnesota",
+"Mississippi",
+"Missouri",
+"Montana",
+"Nebraska",
+"Nevada",
+"New Hampshire",
+"New Jersey",
+"New Mexico",
+"New York",
+"North Carolina",
+"North Dakota",
+"Ohio",
+"Oklahoma",
+"Oregon",
+"Pennsylvania",
+"Rhode Island",
+"South Carolina",
+"South Dakota",
+"Tennessee",
+"Texas",
+"Utah",
+"Vermont",
+"Virginia",
+"Washington",
+"West Virginia",
+"Wisconsin",
+"Wyoming")
+states <- map_data("state")
+```
+
+```{r}
+i <- 1
+stateLower <- list()
+for (state in state_list){
+  lower <- tolower(state)
+  #states$cmte_state <- state.abb[grep(state, states$region)]
+  stateLower[[i]] <- lower
+  i <- i + 1
+}
+
+for(i in seq_along(stateLower)){
+  states[ , 5 ][ states[ , 5 ] == stateLower[i] ] <- state.abb[grep(state_list[i], state.name)]
+}
+
+states$cmte_state <- states$region
+#states$cmte_state <- states$region
+states
+map_per <- inner_join(states, percentage_all, by = "cmte_state")
+#remove duplicate rows
+map_per <- 
+  map_per[!duplicated(map_per), ]
+
+map_per
+
+gg <- ggplot()
+gg <- gg + theme(legend.position="none")
+gg <- gg + geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=percentIn))
+
+gg <- gg + scale_fill_gradient(low = "yellow", high = "red", guide = "colourbar")
+gg <- gg + coord_equal() 
+
+gg
+```
 
 
