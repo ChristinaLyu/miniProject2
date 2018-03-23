@@ -1,7 +1,8 @@
 ---
 title: "Percentage Difference in Contributions in and out of the State"
-author: "Christina Ly & Sicong Li with Github^[Github link: https://github.com/ChristinaLyu/miniProject2.git]"
-date: "3/7/2018"
+author: "Christina Lyu & Sicong Li (using Github^[Github link: https://github.com/ChristinaLyu/miniProject2.git])"
+date: "start: 3/7/2018;
+  last modified: 3/23/2018"
 output: 
   html_document:
     code_folding: hide
@@ -136,7 +137,10 @@ percentage_all <- percentageIn %>%
 bar_plot <- 
   percentage_all %>%
   ggplot(aes(x = factor(cmte_state))) + 
-  geom_bar(aes(x = factor(cmte_state), y = percentIn), stat = "identity", fill = "red") 
+  geom_bar(aes(x = factor(cmte_state), y = percentIn), stat = "identity", fill = "red") + 
+  ggtitle("Percentage of Contribution Inflow")+ 
+  #make the font and the bold of the title
+  theme(plot.title = element_text(family = "Century Gothic", color="Black", face="bold", size=34, hjust=0))
 bar_plot
 ```
 
@@ -226,7 +230,7 @@ map_per <-
   map_per[!duplicated(map_per), ]
 
 #make a function to draw maps with color density
-mapGraph <- function(fillV, color1, color2) {
+mapGraph <- function(fillV, color1, color2, title) {
   ggplot() + 
     #add a theme
     theme(legend.position="none") + 
@@ -234,11 +238,14 @@ mapGraph <- function(fillV, color1, color2) {
     geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=fillV)) + 
     #make the color the same color indicated when calling the function
     scale_fill_gradient(low = color1, high = color2, guide = "colourbar") + 
-    coord_equal() 
+    coord_equal() + 
+    ggtitle(title)+ 
+  #make the font and the bold of the title
+    theme(plot.title = element_text(family = "Century Gothic", color="Black", face="bold", size=45, hjust=0))
 }
 #draw the percentageIn map
 gg <-
-  mapGraph(map_per$percentIn, "yellow", "red")
+  mapGraph(map_per$percentIn, "yellow", "red", "Percentage of Contribution Inflow")
 gg
 
 
@@ -246,10 +253,10 @@ gg
 
 We then mapped the percentIn on a geographical map. It shows that Maine and states in the west coast overall have relatively higher percentIn, while states in the central America have relatively lower percentIn. However, among those states, North Dakota stands out from the states surrounded with the percentIn of 44%.
 
-```{r, warning = FALSE}
+```{r, message = FALSE, warning = FALSE, fig.height = 12, fig.width=15}
 #draw the total map
 gg2 <-   
-  mapGraph(map_per$total, "yellow", "black")
+  mapGraph(map_per$total, "yellow", "black", "Total Contribution to Campaign Committees")
 gg2
 ```
 
