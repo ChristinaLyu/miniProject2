@@ -9,7 +9,7 @@ output:
 
 Git hub link: [https://github.com/ChristinaLyu/miniProject2.git](https://github.com/ChristinaLyu/miniProject2.git)
 
-The amount of campaign funding can indicate A candidate’s ability to find, communicate with and cultivate supporters. In the 2012 presidential election, President Obama, the Democratic Party, and supportive outside groups raised more than $1.1 billion in his victorious campaign. In recent years, political engagement across state lines has increased dramatically. Today, only Alaska and Hawaii impose any limits on out-of-state contributions, and no state limits out-of-state expenditures. Therefore, we want to analyze the difference between inflow and outflow of the contributions in each state.
+The amount of campaign funding can indicate a candidate’s ability to find, communicate with and cultivate supporters. In the 2012 presidential election, President Obama, the Democratic Party, and supportive outside groups raised more than $1.1 billion in his victorious campaign. In recent years, political engagement across state lines has increased dramatically, and only Alaska and Hawaii impose any limits on out-of-state contributions, while there is no state limits out-of-state expenditures. Therefore, we want to analyze the difference between inflow and outflow of the contributions in each state.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -140,11 +140,13 @@ bar_plot <-
 bar_plot
 ```
 
-To analyze the data, we joined dataset *committees* and *contributions* together by committees ID. Then we calculated the sum of transaction inside each state and outside each state. Looking at the bar plot, we can see that except four regions, Arizona, Hawaii, Idaho, and the Northern Mariana Islands, most of the regions have contributions inflow smaller than 50%. This indicates that over half of the money transaction in most of the states is out-of-state transactions, which makes sense as most people care about their rights in the states.
+To analyze the data, we joined dataset *committees* and *contributions* together by committees ID. Then we calculated the sum of transaction inside and outside each state. Looking at the bar plot, we can see that except four regions, which are Arizona, Hawaii, Idaho, and the Northern Mariana Islands, most of the regions have contributions inflow smaller than 50%. This indicates that over half of the money transaction in most of the states is out-of-state transactions. Considering there are 55 regions in total in our dataset, the in-state transaction is the highest among the all, which makes sense as people cares more about their rights in their states.
 
-There is no transaction inflow in Puerto Rico. We think this could be explained by the political voting right of Puerto Rico. Residents in Puerto Rico are not entitled to electoral votes for President. In the U.S. House of Representatives, Puerto Rico is entitled to a Resident Commissioner, a delegate who is not allowed to vote on the floor of the House. Among all the states who do contribute to committees within the states, Iowa has the lowest rate. We found it is noteworthy as Iowa is one of the swing states.
+There is no transaction inflow in Puerto Rico. We think this could be explained by the political voting right of Puerto Rico. Residents in Puerto Rico are not entitled to electoral votes for President. In the U.S. House of Representatives, Puerto Rico is entitled to a Resident Commissioner, a delegate who is not allowed to vote on the floor of the House. 
 
-Looking at the top ten regions with the largest percentIn, four of them (Hawaii, Maine, Nebraska and California) are leaning or solid Democratic. Three of them (Arizona, Idaho and North Dakota) are leaning or solid Republican. Two of them (Guam and the Northern Mariana Islands) are regions that can't vote (Commonwealth/Territory), and Ohio is a swing state. 
+Among all the states who do contribute to committees within the states, Iowa has the lowest rate. We found it is noteworthy as Iowa is one of the swing states.
+
+Also, among the top ten regions with the largest percentIn, four of them (Hawaii, Maine, Nebraska and California) are leaning or solid Democratic. Three of them (Arizona, Idaho and North Dakota) are leaning or solid Republican. Two of them (Guam and the Northern Mariana Islands) are regions that can't vote (Commonwealth/Territory), and Ohio is a swing state. 
 
 ```{r}
 #make a list of state names
@@ -242,7 +244,7 @@ gg
 
 ```
 
-We then mapped the percentIn on a geographical map. It shows that Maine and states in the west coast overall have relatively higher percentIn, while states in the middle America have relatively lower percentIn. However, among states in the middle part of America, North Dakota stands out from the states surround with the percentIn of 44%.
+We then mapped the percentIn on a geographical map. It shows that Maine and states in the west coast overall have relatively higher percentIn, while states in the central America have relatively lower percentIn. However, among those states, North Dakota stands out from the states surrounded with the percentIn of 44%.
 
 ```{r, warning = FALSE}
 #draw the total map
