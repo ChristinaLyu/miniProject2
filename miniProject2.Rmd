@@ -1,13 +1,11 @@
 ---
 title: "Percentage Difference in Contributions in and out of the State"
-author: "Christina Ly & Sicong Li"
+author: "Christina Ly & Sicong Li with Github^[Github link: https://github.com/ChristinaLyu/miniProject2.git]"
 date: "3/7/2018"
 output: 
   html_document:
     code_folding: hide
 ---
-
-Git hub link: [https://github.com/ChristinaLyu/miniProject2.git](https://github.com/ChristinaLyu/miniProject2.git)
 
 The amount of campaign funding can indicate a candidate’s ability to find, communicate with and cultivate supporters. In the 2012 presidential election, President Obama, the Democratic Party, and supportive outside groups raised more than $1.1 billion in his victorious campaign. In recent years, political engagement across state lines has increased dramatically, and only Alaska and Hawaii impose any limits on out-of-state contributions, while there is no state limits out-of-state expenditures. 
 
