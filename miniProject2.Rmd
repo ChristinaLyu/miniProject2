@@ -9,7 +9,9 @@ output:
 
 Git hub link: [https://github.com/ChristinaLyu/miniProject2.git](https://github.com/ChristinaLyu/miniProject2.git)
 
-The amount of campaign funding can indicate a candidate’s ability to find, communicate with and cultivate supporters. In the 2012 presidential election, President Obama, the Democratic Party, and supportive outside groups raised more than $1.1 billion in his victorious campaign. In recent years, political engagement across state lines has increased dramatically, and only Alaska and Hawaii impose any limits on out-of-state contributions, while there is no state limits out-of-state expenditures. Therefore, we want to analyze the difference between inflow and outflow of the contributions in each state.
+The amount of campaign funding can indicate a candidate’s ability to find, communicate with and cultivate supporters. In the 2012 presidential election, President Obama, the Democratic Party, and supportive outside groups raised more than $1.1 billion in his victorious campaign. In recent years, political engagement across state lines has increased dramatically, and only Alaska and Hawaii impose any limits on out-of-state contributions, while there is no state limits out-of-state expenditures. 
+
+Therefore, we want to analyze the difference between inflow and outflow of the contributions in each state and the total contribtions in each state.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
