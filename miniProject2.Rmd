@@ -129,13 +129,10 @@ percentageOut <-
 percentage_all <- percentageIn %>%
   full_join(percentageOut, by = "cmte_state")
   
-all <- 
-  percentage %>%
-  mutate(inState = ifelse(cmte_state == state, 1, 0)) %>%
-  select(cmte_state, inState)
 ```
 
 ```{r, message = FALSE, warning = FALSE, fig.width=15}
+#making a bar plot for each state and the percentage of transmissions within the state
 bar_plot <- 
   percentage_all %>%
   ggplot(aes(x = factor(cmte_state))) + 
@@ -150,6 +147,7 @@ There is no transaction inflow in Puerto Rico. We think this could be explained 
 Looking at the top ten regions with the largest percentIn, four of them (Hawaii, Maine, Nebraska and California) are leaning or solid Democratic. Three of them (Arizona, Idaho and North Dakota) are leaning or solid Republican. Two of them (Guam and the Northern Mariana Islands) are regions that can't vote (Commonwealth/Territory), and Ohio is a swing state. 
 
 ```{r}
+#make a list of state names
 state_list <- c("Alabama",
 "Alaska",
 "Arizona",
@@ -200,10 +198,12 @@ state_list <- c("Alabama",
 "West Virginia",
 "Wisconsin",
 "Wyoming")
+#get the states map from map_data
 states <- map_data("state")
 ```
 
 ```{r, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 12}
+#change all the state name to lowercase to corresponde with the state names in the dataset, because I found the list from the internet and copied it to the code
 i <- 1
 stateLower <- list()
 for (state in state_list){
@@ -211,11 +211,11 @@ for (state in state_list){
   stateLower[[i]] <- lower
   i <- i + 1
 }
-
+#change the state name to teh abbreviation of the state as appeared in cmte_state
 for(i in seq_along(stateLower)){
   states[ , 5 ][ states[ , 5 ] == stateLower[i] ] <- state.abb[grep(state_list[i], state.name)]
 }
-
+#add the column to the states dataset
 states$cmte_state <- states$region
 
 map_per <- inner_join(states, percentage_all, by = "cmte_state")
@@ -223,14 +223,18 @@ map_per <- inner_join(states, percentage_all, by = "cmte_state")
 map_per <- 
   map_per[!duplicated(map_per), ]
 
+#make a function to draw maps with color density
 mapGraph <- function(fillV, color1, color2) {
   ggplot() + 
+    #add a theme
     theme(legend.position="none") + 
+    #draw the map and fill it with color
     geom_map(data=map_per, map=map_per, aes(map_id=cmte_state, x = long, y = lat, fill=fillV)) + 
+    #make the color the same color indicated when calling the function
     scale_fill_gradient(low = color1, high = color2, guide = "colourbar") + 
     coord_equal() 
 }
-
+#draw the percentageIn map
 gg <-
   mapGraph(map_per$percentIn, "yellow", "red")
 gg
@@ -241,6 +245,7 @@ gg
 We then mapped the percentIn on a geographical map. It shows that Maine and states in the west coast overall have relatively higher percentIn, while states in the middle America have relatively lower percentIn. However, among states in the middle part of America, North Dakota stands out from the states surround with the percentIn of 44%.
 
 ```{r, warning = FALSE}
+#draw the total map
 gg2 <-   
   mapGraph(map_per$total, "yellow", "black")
 gg2
